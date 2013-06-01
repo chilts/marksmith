@@ -1,0 +1,7 @@
+{
+    "name" : "marksmith",
+    "description" : "Library to read a dir and create a tree that marksmith-server can serve.",
+    "version" : "0.1.0",
+
+    "main" : "./marksmith.js"
+}
