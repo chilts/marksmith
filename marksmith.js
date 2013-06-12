@@ -69,7 +69,7 @@ function process(queue, store, item, callback) {
     });
 };
 
-function marksmith(dir, done) {
+function marksmith(dir, plugins, done) {
 
     // remove the trailing slash off the dir if there is one
     dir = dir.replace(/\/$/, '');
@@ -85,8 +85,13 @@ function marksmith(dir, done) {
         1
     );
 
-    // when everything has been done, call the done()
+    // when everything has been done, process with plugins then call done()
     queue.drain = function() {
+        // now process all plugins
+        plugins.forEach(function(plugin) {
+            marksmith[plugin](store, console.log);
+        });
+
         done(null, store);
     };
 
@@ -104,7 +109,24 @@ function marksmith(dir, done) {
 // ----------------------------------------------------------------------------
 
 // load up all the plugins
-marksmith.decodeDirCfg = require('./lib/decodeDirCfg.js');
+var plugins = [
+    'convertMarkdownToContentAndRemove',
+    'convertTextileToContentAndRemove',
+    'createDirRedirects',
+    'createTextSitemap',
+    'decodeDirCfg',
+    'decodeJsonToMetaAndRemove',
+    'decodeYamlToMetaAndRemove',
+    'extractYamlFrontMatterToMeta',
+    'filenameDateToMetaAndRename',
+    'makeGravatarUrlsFromAuthorEmail',
+    'renameIndexToDir',
+    'setChtmlAsContentAndRemove',
+    'setHtmlAsRenderedPageAndRemove',
+];
+plugins.forEach(function(plugin) {
+    marksmith[plugin] = require('./lib/' + plugin + '.js');
+});
 
 // export this function
 module.exports = marksmith;
