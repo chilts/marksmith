@@ -14,17 +14,16 @@ var fmt = require('fmt');
 // ----------------------------------------------------------------------------
 
 // process all the files
-function process(queue, store, item, callback) {
-    fmt.line();
-    fmt.field( 'Processing Filename', item.filename );
-    fmt.field( 'Root',                item.root     );
+function process(queue, store, item, log, callback) {
+    log('Processing Filename : ' + item.filename);
+    log('Root : ' + item.root);
 
     // get the 'url' for this item
     var url = item.filename.substr(item.root.length);
     if ( url === '' ) {
         url = '/';
     }
-    fmt.field( 'Current URL',         item.url      );
+    log('Current URL : ' + item.url);
 
     // make the item is created if it doesn't already exist
     store[url] = store[url] || {};
@@ -32,20 +31,19 @@ function process(queue, store, item, callback) {
     // firstly, check if this is a directory or a filename
     fs.stat(item.filename, function(err, stat) {
         if (err) {
-            console.log(err);
             return callback(err);
         }
 
         if ( stat.isDirectory() ) {
             // this is a directory
-            fmt.field('Reading dir', item.filename);
+            log('Reading dir : ' + item.filename);
             fs.readdir(item.filename, function(err, files) {
                 files.forEach(function(filename, i) {
                     // ignore backups and temporary files
                     if ( filename.match(/(^\#)|(^\.\#)|(~$)/) ) {
                         return;
                     }
-                    fmt.field('Found file', filename);
+                    log('Found file : ' + filename);
 
                     queue.push({
                         root     : item.root,
@@ -60,7 +58,7 @@ function process(queue, store, item, callback) {
             // this is a file, read it and continue
             fs.readFile(item.filename, 'utf8', function(err, data) {
                 // data from the file
-                fmt.field('Storing Data', url);
+                log('* storing data');
                 store[url] = store[url] || {};
                 store[url].data = data;
                 callback();
@@ -80,7 +78,7 @@ function marksmith(dir, plugins, log, done) {
     // use a queue to do each file one-by-one
     var queue = async.queue(
         function(item, callback) {
-            process(queue, store, item, callback);
+            process(queue, store, item, log, callback);
         },
         1
     );
@@ -102,7 +100,7 @@ function marksmith(dir, plugins, log, done) {
         url      : '/',
     };
     queue.push(start, function(err) {
-        console.log('Finished processing : ' + dir);
+        log('Finished processing : ' + dir);
     });
 };
 
