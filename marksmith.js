@@ -69,7 +69,7 @@ function process(queue, store, item, callback) {
     });
 };
 
-function marksmith(dir, plugins, done) {
+function marksmith(dir, plugins, log, done) {
 
     // remove the trailing slash off the dir if there is one
     dir = dir.replace(/\/$/, '');
@@ -89,7 +89,7 @@ function marksmith(dir, plugins, done) {
     queue.drain = function() {
         // now process all plugins
         plugins.forEach(function(plugin) {
-            marksmith[plugin](store, console.log);
+            marksmith[plugin](store, log);
         });
 
         done(null, store);
@@ -112,6 +112,8 @@ function marksmith(dir, plugins, done) {
 var plugins = [
     'convertMarkdownToContentAndRemove',
     'convertTextileToContentAndRemove',
+    'createBlogFeeds',
+    'createBlogIndexes',
     'createDirRedirects',
     'createTextSitemap',
     'decodeDirCfg',
