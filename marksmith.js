@@ -120,6 +120,7 @@ var plugins = [
     'extractYamlFrontMatterToMeta',
     'filenameDateToMetaAndRename',
     'makeGravatarUrlsFromAuthorEmail',
+    'makeOtherGravatarUrlSizes',
     'renameIndexToDir',
     'setChtmlAsContentAndRemove',
     'setHtmlAsRenderedPageAndRemove',
