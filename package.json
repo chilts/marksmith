@@ -3,5 +3,38 @@
     "description" : "Library to read a dir and create a tree that marksmith-server can serve.",
     "version" : "0.1.0",
 
-    "main" : "./marksmith.js"
+    "main" : "marksmith.js",
+
+    "dependencies" : {
+        "underscore" : "1.4.x",
+        "async" : "0.2.x",
+        "js-yaml" : "2.1.x",
+        "marked" : "0.2.x",
+        "textile-js" : "0.1.x",
+        "data2xml" : "0.8.x"
+    },
+
+    "homepage" : "https://github.com/chilts/marksmith/",
+    "repository" : {
+        "type" : "git",
+        "url" : "https://github.com/chilts/marksmith-server.git"
+    },
+    "bugs" : {
+        "url" : "http://github.com/chilts/marksmith/issues",
+        "mail" : "andychilton@gmail.com"
+    },
+
+    "author" : {
+        "name" : "Andrew Chilton",
+        "email" : "andychilton@gmail.com",
+        "url" : "http://chilts.org/blog/"
+    },
+    "contributors" : [],
+    "licenses" : [{
+        "type" : "MIT",
+        "url" : "http://github.com/chilts/marksmith/raw/master/LICENSE"
+    }],
+    "keywords" : [
+        "site generator", "static site", "static"
+    ]
 }
