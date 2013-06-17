@@ -9,7 +9,6 @@
 var fs = require('fs');
 
 var async = require('async');
-var fmt = require('fmt');
 
 // ----------------------------------------------------------------------------
 
